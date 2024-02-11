@@ -246,7 +246,7 @@ public abstract  class WGWsimCore {
 //                        setColor(Integer.parseInt(stringColor));
                         setColor(stringColor);
                         break;
-                    case "circle": 
+                    case "circle":
                         double x = op.getDouble("x");
                         double y = op.getDouble("y");
                         double radius = op.getDouble("radius");
