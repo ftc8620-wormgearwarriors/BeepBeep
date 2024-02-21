@@ -23,7 +23,7 @@ import java.util.List;
 // with the gui and system resources.
 // this allow easy use on a phone app, simulator, windows executable etc.
 // exampe:  https://www.baeldung.com/java-template-method-pattern
-public abstract  class WGWsimCore { 
+public abstract  class WGWsimCore {
     private final double fieldSizeInches = 144.0;
     private final Robots robots = new Robots();
     //    private final ArrayList<TelemetryPacket> telemetryHistory = new ArrayList<>();
