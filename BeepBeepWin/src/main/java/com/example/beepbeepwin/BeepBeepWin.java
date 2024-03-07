@@ -12,7 +12,7 @@ import java.awt.*;
             Button b = new Button("Click Me!!");
 
             // setting button position on screen
-            b.setBounds(30,100,80,30);
+            b.setBounds(30,100,80,30); 
 
             // adding button into frame
             add(b);
