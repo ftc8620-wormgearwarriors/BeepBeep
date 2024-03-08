@@ -12,10 +12,12 @@ import java.awt.*;
             Button b = new Button("Click Me!!");
 
             // setting button position on screen
-            b.setBounds(30,100,80,30); 
+            b.setBounds(30,100,80,30);
 
             // adding button into frame
             add(b);
+
+            add(new FieldCanvas());
 
             // frame size 300 width and 300 height
             setSize(800,800);
