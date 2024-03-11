@@ -19,6 +19,8 @@ public class FieldPanel extends JPanel {
         setBorder(BorderFactory.createLineBorder(Color.black));
         setBackground(Color.pink);
         setSize(400,400);
+        setMinimumSize(getSize());
+        setPreferredSize(getSize());
         layers = new LinkedHashMap<>();
     }
 
@@ -26,9 +28,9 @@ public class FieldPanel extends JPanel {
         layers.put(layer, image);
     }
 
-    public Dimension getPreferredSize() {
-        return new Dimension(400,400);
-    }
+//    public Dimension getPreferredSize() {
+//        return new Dimension(100,1000);
+//    }
 
 
     public void paint(Graphics g) {
@@ -38,7 +40,7 @@ public class FieldPanel extends JPanel {
 //        g.setColor(Color.green);
 //        g.drawString("WGW Sim Test", 100,100);
         for(LayerNames i : layers.keySet())  //render all layers
-            g.drawImage(layers.get(i), 0, 0, 400, 400, null);
+            g.drawImage(layers.get(i), 0, 0, getWidth(), getHeight(), null);
     }
 
 

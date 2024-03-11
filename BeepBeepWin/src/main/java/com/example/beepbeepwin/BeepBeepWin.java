@@ -7,13 +7,14 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.util.Objects;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -22,60 +23,91 @@ import javax.swing.*;
     // extending Frame class to our class AWTExample1
     public class BeepBeepWin extends JFrame {
 
-        BufferedImage robotlayer = null;
-        Graphics robotGraphic = null;
+        BufferedImage robotlayer;
+        Graphics robotGraphic;
+        JTextArea textView;
 
         // initializing using constructor
         BeepBeepWin() {
+            final int FIELD_GRID_SIZE = 6;
+
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-            // creating a button, set size/position, add to JFrame
-            JButton b = new JButton("Click Me!!");
-            b.setBounds(500,500,80,30);
-            add(b);
+            GridBagLayout grid = new GridBagLayout();
+            GridBagConstraints gbc = new GridBagConstraints();
+            setLayout(grid);
+            GridBagLayout layout = new GridBagLayout();
+            this.setLayout(layout);
+
+            gbc.fill = GridBagConstraints.HORIZONTAL;
+            gbc.gridx = 0;
+            gbc.gridy = FIELD_GRID_SIZE;
+            this.add(new JButton("Button One"), gbc);
+            gbc.gridx = 1;
+            gbc.gridy = FIELD_GRID_SIZE;
+            this.add(new JButton("Button two"), gbc);
+            gbc.fill = GridBagConstraints.HORIZONTAL;
+            gbc.ipady = 20;
+            gbc.gridx = 2;
+            gbc.gridy = FIELD_GRID_SIZE;
+            this.add(new JButton("Button Three"), gbc);
+            gbc.gridx = 3;
+            gbc.gridy = FIELD_GRID_SIZE;
+            this.add(new JButton("Button Four"), gbc);
+            gbc.gridx = 0;
+            gbc.gridy = FIELD_GRID_SIZE+1;
+            gbc.fill = GridBagConstraints.HORIZONTAL;
+            gbc.gridwidth = 2;
+            this.add(new JButton("Button Five"), gbc);
 
             // create a graphic panel for the field and draw on it.
             FieldPanel fieldPanel = new FieldPanel();
-            add(fieldPanel);
-            BufferedImage image = null;
+            gbc.fill = GridBagConstraints.HORIZONTAL;
+            gbc.gridx = 0;
+            gbc.gridy = 0;
+            gbc.gridwidth = FIELD_GRID_SIZE;
+            gbc.gridheight = FIELD_GRID_SIZE;
+            this.add(fieldPanel,gbc);
 
-//            try {
-////                image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/resources/images/test.bmp")));
+            textView = new JTextArea("Robot text will show here");
+            textView.setSize(400,400);
+            textView.setPreferredSize(textView.getSize());
+            textView.setMinimumSize(textView.getSize());
+            gbc.fill = GridBagConstraints.HORIZONTAL;
+            gbc.gridx = FIELD_GRID_SIZE;
+            gbc.gridy = FIELD_GRID_SIZE;
+            gbc.gridwidth = FIELD_GRID_SIZE;
+            gbc.gridheight = FIELD_GRID_SIZE;
+            this.add(textView);
+
+
+            BufferedImage image;
+            // todo fix this file load
             File file = new File("D:/Users/Craug/StudioProjects/TestMultiGit/BeepBeepWin/src/main/java/com/example/beepbeepwin/test.bmp");
             try {
                 image = ImageIO.read(file);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            Class c = getClass();
-                URL url = c.getResource("../test.bmp");
-//                if (url != null)
-//                    image = ImageIO.read(url);
-//            } catch (IOException e) {
-//                throw new RuntimeException(e);
-//            }
             fieldPanel.addLayer(FieldPanel.LayerNames.BACKGROUND, image);
 
             robotlayer = new BufferedImage(400, 400, BufferedImage.TYPE_INT_ARGB);
             robotGraphic = robotlayer.getGraphics();
-//            robotGraphic.setColor(Color.black);
-//            robotGraphic.drawOval(200,200,50, 50);
-
             fieldPanel.addLayer(FieldPanel.LayerNames.ROBOTS, robotlayer);
 
             // frame size 300 width and 300 height
-            setSize(800,800);
+            setSize(900,600);
+            setMinimumSize(getSize());
+//            setPreferredSize(getSize());
 
             // setting the title of Frame
             setTitle("BeepBeepWin");
 
-            // no layout manager
-            setLayout(null);
 
             // now frame will be visible, by default it is not visible
             setVisible(true);
 
-            //  todo - for test force a robot path
+            //  todo - force test force a robot path
             wgwSimCore.clearRobotActions();
             wgwSimCore.setCurrentAction(1, wgwSimCore.getActionNames(1).get(1));
             wgwSimCore.startAction();
@@ -132,12 +164,12 @@ import javax.swing.*;
 
             @Override
             public void telemetryTextAddLine(String str) {
-                // textView.append(str);
+                 textView.append(str);
             }
 
             @Override
             public void telemetryTextClear() {
-                // textView.setText("");  // got some new text so clear the display
+                textView.setText("");  // got some new text so clear the display
             }
         };
 
