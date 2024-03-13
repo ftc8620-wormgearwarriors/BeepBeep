@@ -3,6 +3,7 @@ package com.example.beepbeepwin;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -18,9 +19,9 @@ public class FieldPanel extends JPanel {
     public FieldPanel() {
         setBorder(BorderFactory.createLineBorder(Color.black));
         setBackground(Color.pink);
-        setSize(400,400);
+        setSize(500,500);
         setMinimumSize(getSize());
-        setPreferredSize(getSize());
+        setPreferredSize(new Dimension(500,500));
         layers = new LinkedHashMap<>();
     }
 
@@ -28,19 +29,41 @@ public class FieldPanel extends JPanel {
         layers.put(layer, image);
     }
 
-//    public Dimension getPreferredSize() {
-//        return new Dimension(100,1000);
-//    }
-
 
     public void paint(Graphics g) {
         super.paintComponent(g);
-//        g.setColor(Color.BLUE);
-//        g.fillOval(75,75,150,75);
-//        g.setColor(Color.green);
-//        g.drawString("WGW Sim Test", 100,100);
         for(LayerNames i : layers.keySet())  //render all layers
             g.drawImage(layers.get(i), 0, 0, getWidth(), getHeight(), null);
+    }
+
+    /**
+     * Override the preferred size to return the largest it can, in
+     * a square shape.  Must (must, must) be added to a GridBagLayout
+     * as the only component (it uses the parent as a guide to size)
+     * with no GridBagConstaint (so it is centered).
+     * from: https://coderanch.com/t/629253/java/create-JPanel-maintains-aspect-ratio
+     */
+    @Override
+    public final Dimension getPreferredSize() {
+        Dimension d = super.getPreferredSize();
+        System.out.println("d=" + d.width + ", " + d.height);
+        Dimension prefSize = null;
+        Component c = getParent();
+//        System.out.println("c=" + c);
+//        System.out.println("c=" + c.getWidth() + ", " + c.getHeight());
+        if (c == null) {
+            prefSize = new Dimension((int) d.getWidth(), (int) d.getHeight());
+        } else if (c.getWidth() > d.getWidth() && c.getHeight() > d.getHeight()) {
+            prefSize = c.getSize();
+        } else {
+            prefSize = d;
+        }
+        int w = (int) prefSize.getWidth();
+        int h = (int) prefSize.getHeight();
+        // the smaller of the two sizes
+        int s = (w > h ? h : w);
+        System.out.println("s=" + s);
+        return new Dimension(s, s);
     }
 
 

@@ -87,6 +87,15 @@ public abstract  class WGWsimCore {
         actionDuration = defaultActionDurationMs;
     }
 
+    public void setCurrentAction(String robotName, String actionName) {
+        for (int i=0; i < robots.simRobots.size();i++) {  // have to look for the robot name.
+            if (robots.simRobots.get(i).getName() == robotName) {
+                setCurrentAction(i, actionName);
+                return;
+            }
+        }
+    }
+
     public void clearRobotActions() {
         for (int r = 0; r < robots.simRobots.size(); r++)
             robots.simRobots.get(r).setAction(null);
