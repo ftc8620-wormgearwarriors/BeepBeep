@@ -12,7 +12,7 @@ import java.util.LinkedHashMap;
 // concept taking from https://stackoverflow.com/questions/35974972/multiple-independent-layers-in-graphics
 
 public class FieldPanel extends JPanel {
-    public enum LayerNames {BACKGROUND, ROBOTS, GRID}
+    public enum LayerNames {BACKGROUND, ROBOTS, MOUSE, GRID}
 
     LinkedHashMap<LayerNames, BufferedImage> layers;
 
@@ -46,7 +46,7 @@ public class FieldPanel extends JPanel {
     @Override
     public final Dimension getPreferredSize() {
         Dimension d = super.getPreferredSize();
-        System.out.println("d=" + d.width + ", " + d.height);
+//        System.out.println("d=" + d.width + ", " + d.height);
         Dimension prefSize = null;
         Component c = getParent();
 //        System.out.println("c=" + c);
@@ -62,7 +62,7 @@ public class FieldPanel extends JPanel {
         int h = (int) prefSize.getHeight();
         // the smaller of the two sizes
         int s = (w > h ? h : w);
-        System.out.println("s=" + s);
+//        System.out.println("s=" + s);
         return new Dimension(s, s);
     }
 

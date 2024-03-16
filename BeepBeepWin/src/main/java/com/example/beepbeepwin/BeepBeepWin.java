@@ -12,7 +12,9 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -27,10 +29,12 @@ public class BeepBeepWin extends JFrame {
     BufferedImage robotlayer;
     Graphics robotGraphic;
     JTextArea textView;
-    JSlider scrolBar;
+    JTextArea mouseInfo;
+    JSlider slider;
     JMenu menu;
     JButton playPause;
     boolean startNewRun = true;
+    boolean showMouseCursor = true;
 
 
     // initializing using constructor
@@ -58,17 +62,25 @@ public class BeepBeepWin extends JFrame {
         textView.setPreferredSize(textView.getSize());
         add(textView);
 
-        scrolBar = new JSlider(HORIZONTAL,30*SEEK_BAR_SCALE);
-        add(scrolBar);
-        scrolBar.addMouseMotionListener(new MouseMotionAdapter() {
+
+        mouseInfo = new JTextArea("Field Coordinates");
+        mouseInfo.setEditable(false);
+//        mouseInfo.setSize(400,400);
+//        mouseInfo.setPreferredSize(mouseInfo.getSize());
+        add(mouseInfo);
+
+        slider = new JSlider(HORIZONTAL,30*SEEK_BAR_SCALE);
+        add(slider);
+        slider.addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                double time = ((double)scrolBar.getValue() / scrolBar.getMaximum()) * wgwSimCore.getActionDuration();
+                double time = ((double) slider.getValue() / slider.getMaximum()) * wgwSimCore.getActionDuration();
                 wgwSimCore.showAtTimeMs(time);
                 wgwSimCore.pauseAction();
                 playPause.setText("Play");
             }
         });
+
 
         playPause = new JButton("Pause");
         add(playPause);
@@ -86,6 +98,23 @@ public class BeepBeepWin extends JFrame {
         add(rePLay);
         rePLay.addActionListener(actionEvent -> startNewRun = true);
 
+        String positionOptions[] = {"Left", "Center", "Right"};
+        JComboBox positionSel = new JComboBox(positionOptions);
+        add(positionSel);
+        positionSel.addActionListener(actionEvent -> {
+            int max = menu.getItemCount();
+            for(int i = 0; i<max;i++) {
+                JMenu subMenu = (JMenu) menu.getItem(i);
+                String robotName = subMenu.getText();
+                for (int j = 0; j < subMenu.getItemCount(); j++) {
+                    if (!subMenu.getItem(0).isSelected()) {
+                        subMenu.getItem(positionSel.getSelectedIndex() + 1).setSelected(true);
+                    }
+                }
+                startNewRun = true;
+            }
+        });
+
 
         // setup the spring layout constraints to position all the controls in the window
         sprLayout.putConstraint(SpringLayout.WEST, jP,   5, SpringLayout.WEST, getContentPane());
@@ -95,10 +124,10 @@ public class BeepBeepWin extends JFrame {
         sprLayout.putConstraint(SpringLayout.WEST,  textView,  5, SpringLayout.EAST, jP);
         sprLayout.putConstraint(SpringLayout.NORTH, textView, 5, SpringLayout.NORTH, jP);
 
-        // constraints for scroll bar placement
-        sprLayout.putConstraint(SpringLayout.NORTH, scrolBar, 5, SpringLayout.SOUTH, jP);
-        sprLayout.putConstraint(SpringLayout.WEST,  scrolBar,  0, SpringLayout.WEST, jP);
-        sprLayout.putConstraint(SpringLayout.EAST, scrolBar, 0, SpringLayout.EAST, jP);
+        // constraints for slider bar placement
+        sprLayout.putConstraint(SpringLayout.NORTH, slider, 5, SpringLayout.SOUTH, jP);
+        sprLayout.putConstraint(SpringLayout.WEST, slider,  0, SpringLayout.WEST, jP);
+        sprLayout.putConstraint(SpringLayout.EAST, slider, 0, SpringLayout.EAST, jP);
 
         // constraints for PLay/Pause button
         sprLayout.putConstraint(SpringLayout.NORTH, playPause, 10, SpringLayout.SOUTH, textView);
@@ -108,10 +137,18 @@ public class BeepBeepWin extends JFrame {
         sprLayout.putConstraint(SpringLayout.NORTH, rePLay, 0, SpringLayout.NORTH, playPause);
         sprLayout.putConstraint(SpringLayout.WEST, rePLay, 5,  SpringLayout.EAST, playPause);
 
+        // constraints for positionSel
+        sprLayout.putConstraint(SpringLayout.NORTH, positionSel, 0, SpringLayout.NORTH, rePLay);
+        sprLayout.putConstraint(SpringLayout.WEST, positionSel, 5,  SpringLayout.EAST, rePLay);
+
+        // constraints for mouseInfo
+        sprLayout.putConstraint(SpringLayout.NORTH, mouseInfo, 5, SpringLayout.SOUTH, playPause);
+        sprLayout.putConstraint(SpringLayout.WEST, mouseInfo, 5,  SpringLayout.WEST, playPause);
+
 
         // bottom and right edge of window.
         sprLayout.putConstraint(SpringLayout.EAST, getContentPane(), 5, SpringLayout.EAST, textView);
-        sprLayout.putConstraint(SpringLayout.SOUTH, getContentPane(),5, SpringLayout.SOUTH, scrolBar);
+        sprLayout.putConstraint(SpringLayout.SOUTH, getContentPane(),5, SpringLayout.SOUTH, slider);
 
 
         BufferedImage image;
@@ -127,6 +164,68 @@ public class BeepBeepWin extends JFrame {
         robotlayer = new BufferedImage(500, 500, BufferedImage.TYPE_INT_ARGB);
         robotGraphic = robotlayer.getGraphics();
         fieldPanel.addLayer(FieldPanel.LayerNames.ROBOTS, robotlayer);
+        BufferedImage mouseLayer = new BufferedImage(500, 500, BufferedImage.TYPE_INT_ARGB);
+        fieldPanel.addLayer(FieldPanel.LayerNames.MOUSE, mouseLayer);
+        fieldPanel.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                float x = mouseEvent.getX();
+                float y = mouseEvent.getY();
+                double fieldInches = wgwSimCore.getFieldDimensionInches();
+                double relativeX =  x * fieldInches / fieldPanel.getWidth() - fieldInches / 2.0;
+                double relativeY = -y * fieldInches / fieldPanel.getHeight() + fieldInches / 2.0;
+                String formatedStr = String.format("clicked x: %.2f   y: %.2f\n", relativeX, relativeY);
+                mouseInfo.setText(formatedStr);
+            }
+
+            @Override
+            public void mousePressed(MouseEvent mouseEvent) {
+                if (mouseEvent.getButton() == MouseEvent.BUTTON2) {
+                    showMouseCursor = !showMouseCursor;
+                }
+            }
+            @Override
+            public void mouseReleased(MouseEvent mouseEvent) { }
+            @Override
+            public void mouseEntered(MouseEvent mouseEvent) { }
+            @Override
+            public void mouseExited(MouseEvent mouseEvent) {
+                // clear our transparent overlay to draw robots on.
+                Graphics2D g2 = mouseLayer.createGraphics();
+                g2.setComposite(AlphaComposite.Clear);
+                g2.fillRect(0, 0, mouseLayer.getWidth(), mouseLayer.getHeight());
+                g2.dispose();
+            }
+        });
+
+        fieldPanel.addMouseMotionListener(new MouseMotionListener() {
+            @Override
+            public void mouseDragged(MouseEvent mouseEvent) { }
+
+            @Override
+            public void mouseMoved(MouseEvent mouseEvent) {
+                // clear our transparent overlay to draw robots on.
+                Graphics2D g2 = mouseLayer.createGraphics();
+                g2.setComposite(AlphaComposite.Clear);
+                g2.fillRect(0, 0, mouseLayer.getWidth(), mouseLayer.getHeight());
+                g2.dispose();
+                if (showMouseCursor) {
+                    float x = mouseEvent.getX();
+                    float y = mouseEvent.getY();
+                    double fieldInches = wgwSimCore.getFieldDimensionInches();
+                    double relativeX = x * fieldInches / fieldPanel.getWidth() - fieldInches / 2.0;
+                    double relativeY = -y * fieldInches / fieldPanel.getHeight() + fieldInches / 2.0;
+                    String formatedStr = String.format("moved x: %.2f   y: %.2f\n", relativeX, relativeY);
+                    mouseInfo.setText(formatedStr);
+                    Graphics g = mouseLayer.getGraphics();
+                    int xi = (int) ((x * mouseLayer.getWidth()) / fieldPanel.getWidth());
+                    int yi = (int) ((y * mouseLayer.getHeight()) / fieldPanel.getHeight());
+                    g.setColor(Color.MAGENTA);
+                    g.drawLine(xi, 0, xi, mouseLayer.getHeight());
+                    g.drawLine(0, yi, mouseLayer.getWidth(), yi);
+                }
+            }
+        });
 
         // frame size
         setSize(1024,650);
@@ -203,7 +302,7 @@ public class BeepBeepWin extends JFrame {
         wgwSimCore.timerTick();
         getContentPane().repaint(); // don't forget to repaint the container
         double time = wgwSimCore.getCurrentTimeMs();
-        scrolBar.setValue((int) ( (double)scrolBar.getMaximum() * time / wgwSimCore.getActionDuration() ));
+        slider.setValue((int) ( (double) slider.getMaximum() * time / wgwSimCore.getActionDuration() ));
 
     }
 
