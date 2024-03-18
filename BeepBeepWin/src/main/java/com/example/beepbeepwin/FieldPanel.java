@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.LinkedHashMap;
 
@@ -14,7 +15,7 @@ import java.util.LinkedHashMap;
 public class FieldPanel extends JPanel {
     public enum LayerNames {BACKGROUND, ROBOTS, MOUSE, GRID}
 
-    LinkedHashMap<LayerNames, BufferedImage> layers;
+    LinkedHashMap<LayerNames, Image> layers;
 
     public FieldPanel() {
         setBorder(BorderFactory.createLineBorder(Color.black));
@@ -25,7 +26,7 @@ public class FieldPanel extends JPanel {
         layers = new LinkedHashMap<>();
     }
 
-    public void addLayer(LayerNames layer, BufferedImage image){
+    public void addLayer(LayerNames layer, Image image){
         layers.put(layer, image);
     }
 

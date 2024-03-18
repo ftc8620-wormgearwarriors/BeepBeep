@@ -19,6 +19,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -39,8 +41,6 @@ public class BeepBeepWin extends JFrame {
 
     // initializing using constructor
     BeepBeepWin() {
-        final int FIELD_GRID_SIZE = 6;
-
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         SpringLayout sprLayout = new SpringLayout();
@@ -65,8 +65,6 @@ public class BeepBeepWin extends JFrame {
 
         mouseInfo = new JTextArea("Field Coordinates");
         mouseInfo.setEditable(false);
-//        mouseInfo.setSize(400,400);
-//        mouseInfo.setPreferredSize(mouseInfo.getSize());
         add(mouseInfo);
 
         slider = new JSlider(HORIZONTAL,30*SEEK_BAR_SCALE);
@@ -98,14 +96,13 @@ public class BeepBeepWin extends JFrame {
         add(rePLay);
         rePLay.addActionListener(actionEvent -> startNewRun = true);
 
-        String positionOptions[] = {"Left", "Center", "Right"};
+        String[] positionOptions = {"Left", "Center", "Right"};
         JComboBox positionSel = new JComboBox(positionOptions);
         add(positionSel);
         positionSel.addActionListener(actionEvent -> {
             int max = menu.getItemCount();
             for(int i = 0; i<max;i++) {
                 JMenu subMenu = (JMenu) menu.getItem(i);
-                String robotName = subMenu.getText();
                 for (int j = 0; j < subMenu.getItemCount(); j++) {
                     if (!subMenu.getItem(0).isSelected()) {
                         subMenu.getItem(positionSel.getSelectedIndex() + 1).setSelected(true);
@@ -151,9 +148,10 @@ public class BeepBeepWin extends JFrame {
         sprLayout.putConstraint(SpringLayout.SOUTH, getContentPane(),5, SpringLayout.SOUTH, slider);
 
 
-        BufferedImage image;
-        // todo fix this file load
-        File file = new File("D:/Users/Craug/StudioProjects/TestMultiGit/BeepBeepWin/src/main/java/com/example/beepbeepwin/test.bmp");
+        BufferedImage image=null;
+        // todo fix this file load - can't get images to save in projects as resources?
+        // this path is relative to the "working Directory" set in the "Edit Configuration" section of "run/debug config" dropdown
+        File file = new File("BeepBeepWin\\src\\main\\java\\com\\example\\beepbeepwin\\resources\\images\\fieldsmall.bmp");
         try {
             image = ImageIO.read(file);
         } catch (IOException e) {
@@ -215,7 +213,7 @@ public class BeepBeepWin extends JFrame {
                     double fieldInches = wgwSimCore.getFieldDimensionInches();
                     double relativeX = x * fieldInches / fieldPanel.getWidth() - fieldInches / 2.0;
                     double relativeY = -y * fieldInches / fieldPanel.getHeight() + fieldInches / 2.0;
-                    String formatedStr = String.format("moved x: %.2f   y: %.2f\n", relativeX, relativeY);
+                    String formatedStr = String.format(Locale.US, "moved x: %.2f   y: %.2f\n", relativeX, relativeY);
                     mouseInfo.setText(formatedStr);
                     Graphics g = mouseLayer.getGraphics();
                     int xi = (int) ((x * mouseLayer.getWidth()) / fieldPanel.getWidth());
@@ -267,7 +265,7 @@ public class BeepBeepWin extends JFrame {
         pack();
         setVisible(true);
 
-        // Create a timr tic to
+        // Create a timer tic to run the sim core
         new javax.swing.Timer((int)wgwSimCore.getTimerTickms(), new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 timerTick();
@@ -295,26 +293,23 @@ public class BeepBeepWin extends JFrame {
                         wgwSimCore.setCurrentAction(robotName, path);
                     }
                 }
-                System.out.println("");
             }
             wgwSimCore.startAction();
         }
+
         wgwSimCore.timerTick();
         getContentPane().repaint(); // don't forget to repaint the container
         double time = wgwSimCore.getCurrentTimeMs();
         slider.setValue((int) ( (double) slider.getMaximum() * time / wgwSimCore.getActionDuration() ));
-
     }
 
     // convert FTC field locaiton in inches to screen pixel locations
     Vector2d inch2Pixel (Vector2d inch) {
         int h = robotlayer.getHeight();
         int w = robotlayer.getWidth();
-
         double scale = Math.min(h, w) /  wgwSimCore.getFieldDimensionInches();
         int x = (int) (w / 2 + inch.x * scale);
         int y = (int) (h / 2 - inch.y * scale);
-
         return new Vector2d(x,y);
     }
 
@@ -363,4 +358,5 @@ public class BeepBeepWin extends JFrame {
             }
         });
     }
+
 }
