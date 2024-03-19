@@ -151,7 +151,7 @@ public class BeepBeepWin extends JFrame {
         BufferedImage image=null;
         // todo fix this file load - can't get images to save in projects as resources?
         // this path is relative to the "working Directory" set in the "Edit Configuration" section of "run/debug config" dropdown
-        File file = new File("BeepBeepWin\\src\\main\\java\\com\\example\\beepbeepwin\\resources\\images\\fieldsmall.bmp");
+        File file = new File("src\\main\\java\\com\\example\\beepbeepwin\\resources\\images\\fieldsmall.bmp");
         try {
             image = ImageIO.read(file);
         } catch (IOException e) {
