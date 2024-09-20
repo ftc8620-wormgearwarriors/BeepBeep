@@ -152,7 +152,10 @@ public class BeepBeepWin extends JFrame {
         BufferedImage image=null;
         // todo fix this file load - can't get images to save in projects as resources?
         // this path is relative to the "working Directory" set in the "Edit Configuration" section of "run/debug config" dropdown
-        File file = new File("src\\main\\java\\com\\example\\beepbeepwin\\resources\\images\\fieldsmall.bmp");
+        // also need easy way to configure what background to load
+        // centerstage - File file = new File("src\\main\\java\\com\\example\\beepbeepwin\\resources\\images\\centerStageSmall.bmp");
+        File file = new File("src\\main\\java\\com\\example\\beepbeepwin\\resources\\images\\intoTheDeep.bmp");
+
         try {
             image = ImageIO.read(file);
         } catch (IOException e) {
@@ -313,6 +316,15 @@ public class BeepBeepWin extends JFrame {
         int y = (int) (h / 2 - inch.y * scale);
         return new Vector2d(x,y);
     }
+    // convert FTC field locaiton in inches to screen pixel locations
+    Vector2d scaleInch2Pixel (Vector2d inch) {
+        int h = robotlayer.getHeight();
+        int w = robotlayer.getWidth();
+        double scale = Math.min(h, w) /  wgwSimCore.getFieldDimensionInches();
+        int x = (int) (inch.x * scale);
+        int y = (int) (inch.y * scale);
+        return new Vector2d(x,y);
+    }
 
     WGWsimCore wgwSimCore = new WGWsimCore() {
         @Override
@@ -323,7 +335,10 @@ public class BeepBeepWin extends JFrame {
 
         @Override
         public void drawCircleInches(double xInches, double yInches, double rInches) {
-            //todo
+            Vector2d start  = new Vector2d(xInches-rInches, yInches+rInches );
+            Vector2d end    = new Vector2d(rInches*2, rInches*2);
+            robotGraphic.drawOval((int)inch2Pixel(start).x, (int)inch2Pixel(start).y,
+                    (int)scaleInch2Pixel(end).x, (int)scaleInch2Pixel(end).y);
         }
 
         @Override

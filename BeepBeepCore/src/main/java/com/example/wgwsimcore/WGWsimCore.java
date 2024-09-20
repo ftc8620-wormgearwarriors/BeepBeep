@@ -25,20 +25,18 @@ import java.util.List;
 // exampe:  https://www.baeldung.com/java-template-method-pattern
 public abstract  class WGWsimCore {
 
-    private final double fieldSizeInches = 144.0;
-    private final Robots robots = new Robots();
-    //    private final ArrayList<TelemetryPacket> telemetryHistory = new ArrayList<>();
-    private final long timerTickms = 100;
-    private final double defaultActionDurationMs = 30.0 * 1000;
-//    SimRobot needRobotList = robots.simRobots.get("MiniMe"); // todo  NEED a LIST of robots that are run actions!
+    private final double    fieldSizeInches = 144.0;
+    private final Robots    robots = new Robots();
+    private final long      timerTickms = 100;
+    private final double    defaultActionDurationMs = 30.0 * 1000;
 
-    //    private Action action;
-//    private boolean done = true;
     private boolean paused = false;
     private boolean startNewRun = false;
     private boolean newFieldOverlay = false;
-    private int showRobotIndex = 0;
-    private double actionDuration = defaultActionDurationMs;
+    private int     showRobotIndex = 0;
+    private double  actionDuration = defaultActionDurationMs;
+    private double  simTimeMs = 0;
+    private int     runCount = 0;
 
     // These Abstract classes must be implemented in the instantiated clases
     public abstract void drawLineInches(Vector2d start, Vector2d end);
@@ -51,19 +49,10 @@ public abstract  class WGWsimCore {
 
     public abstract void telemetryTextClear();
 
+
     public double getFieldDimensionInches() {
         return fieldSizeInches;
     }
-
-    // return a list of Robot names
-//    public List<String> getRobotNames() {
-//        List<String> retVal = new ArrayList<String>();
-//
-//        // add all the names of the paths.
-//        retVal.addAll(robots.simRobots.keySet());
-//
-//        return retVal;
-//    }
 
     public int getNumRobots() {
         return robots.simRobots.size();
@@ -76,7 +65,6 @@ public abstract  class WGWsimCore {
     public boolean getRobotEnabled(int index) {
         return robots.simRobots.get(index).getEnabled();
     }
-
 
     // return a list of the path names
     public List<String> getActionNames(int  robotIndex) {
@@ -119,10 +107,6 @@ public abstract  class WGWsimCore {
 
     public double getActionDuration() {return actionDuration;}
 
-//    public boolean isDone() {return done;}
-
-    private double simTimeMs = 0;
-    private int runCount = 0;
 
     public double getsimTimeMs() {return simTimeMs;};
     public double getCurrentTimeMs() {return showRobotIndex*timerTickms;};
@@ -157,8 +141,7 @@ public abstract  class WGWsimCore {
                 TelemetryPacket dashTelemetryPacket = new TelemetryPacket();
                 SimRobot robot = robots.simRobots.get(i);
                 needToRun |= robot.runAction(dashTelemetryPacket);
-//                dashTelemetryPacket.put("Elapsed TIme", simTimeMs / 1000);  // add a time statement to each packet
-                robot.putTelemetryHistory(dashTelemetryPacket);  // telemetryHistory.add(dashTelemetryPacket); // store the packet for later use
+                robot.putTelemetryHistory(dashTelemetryPacket);  // store the packet for later use
             }
             simulationComplete = !needToRun;
             if (simulationComplete){
@@ -179,7 +162,6 @@ public abstract  class WGWsimCore {
             for (int i=0; i< robots.simRobots.size(); i++) {   // all robots, clear telemetry
                 SimRobot robot = robots.simRobots.get(i);
                 decodeTelemetry(robot.getTelemetryHistory(showRobotIndex), robots.simRobots.get(i).getName());
-//                telemetryTextAddLine("\n");
             }
             if (! paused) {
                 showRobotIndex++;
@@ -253,7 +235,6 @@ public abstract  class WGWsimCore {
                         break;
                     case "stroke":
                         String stringColor = op.getString("color"); //
-//                        setColor(Integer.parseInt(stringColor));
                         setColor(stringColor);
                         break;
                     case "circle":
