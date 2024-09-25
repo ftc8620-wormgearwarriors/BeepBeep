@@ -62,7 +62,7 @@
         android:progress="0"
         android:progressDrawable="@drawable/myprogressbar"
         android:secondaryProgress="0"
-        android:secondaryProgressTint="@color/dashboardColor"
+        android:secondaryProgressTint="@android:color/holo_blue_dark"
         android:secondaryProgressTintMode="src_in"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

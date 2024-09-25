@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -155,9 +156,10 @@ public class BeepBeepWin extends JFrame {
         // also need easy way to configure what background to load
         // centerstage - File file = new File("src\\main\\java\\com\\example\\beepbeepwin\\resources\\images\\centerStageSmall.bmp");
         File file = new File("src\\main\\java\\com\\example\\beepbeepwin\\resources\\images\\intoTheDeep.bmp");
-
         try {
             image = ImageIO.read(file);
+//            image = ImageIO.read(getClass().getResource("resources/images/intoTheDeep.bmp"));
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -316,7 +318,8 @@ public class BeepBeepWin extends JFrame {
         int y = (int) (h / 2 - inch.y * scale);
         return new Vector2d(x,y);
     }
-    // convert FTC field locaiton in inches to screen pixel locations
+
+    // convert FTC field locaiton in inches to screen pixels (not off set for center of screen)
     Vector2d scaleInch2Pixel (Vector2d inch) {
         int h = robotlayer.getHeight();
         int w = robotlayer.getWidth();

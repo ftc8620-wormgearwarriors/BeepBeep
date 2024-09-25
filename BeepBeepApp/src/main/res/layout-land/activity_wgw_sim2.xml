@@ -64,15 +64,15 @@
         android:layout_height="0dp"
         android:max="300"
         android:progress="0"
+        android:progressDrawable="@drawable/myprogressbar"
         android:secondaryProgress="0"
-        android:secondaryProgressTint="@color/dashboardColor"
+        android:secondaryProgressTint="@android:color/holo_blue_dark"
         android:secondaryProgressTintMode="src_in"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/ftcFieldView"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ftcFieldView"
-        android:progressDrawable="@drawable/myprogressbar"/>
+        app:layout_constraintTop_toBottomOf="@+id/ftcFieldView" />
 
     <ImageView
         android:id="@+id/ftcFieldView"

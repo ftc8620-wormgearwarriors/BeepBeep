@@ -32,6 +32,8 @@ import com.example.wgwsim2.databinding.ActivityWgwSim2Binding;
 import com.example.wgwsimcore.WGWsimCore;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
@@ -98,7 +100,11 @@ public class WgwSim2Activity extends AppCompatActivity {
 
         @Override
         public void drawCircleInches(double xInches, double yInches, double rInches) {
-            //todo
+            Vector2d start  = new Vector2d(xInches-rInches, yInches+rInches );
+            Vector2d end  = new Vector2d(xInches+rInches, yInches-rInches );
+            workingCanvas.drawOval((float)inch2Pixel(start).x, (float)inch2Pixel(start).y,
+                    (float)inch2Pixel(end).x, (float)inch2Pixel(end).y,
+                    workingPaint);
         }
 
         @Override
@@ -145,6 +151,7 @@ public class WgwSim2Activity extends AppCompatActivity {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inMutable = true;
         fieldBMP = BitmapFactory.decodeResource(getResources(), R.drawable.fieldsmall, options);
+
         ftcFieldView.setImageBitmap(fieldBMP); // put up the field view
         seekBar = findViewById(R.id.seekBar2);
 
