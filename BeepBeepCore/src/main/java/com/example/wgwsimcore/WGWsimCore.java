@@ -14,8 +14,14 @@ import org.json.JSONObject;
 
 //import org.json.simple.JSONObject;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.imageio.ImageIO;
+
 
 // this class stores the core functions need to run the simulator, while providing abstraction
 // from the GUI portion of the simulator
@@ -248,5 +254,27 @@ public abstract  class WGWsimCore {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public BufferedImage getBackGroundImage () {
+        BufferedImage image;
+
+        String filepath = "";
+
+        switch (robots.background) {
+            case centerStage:
+                filepath = "/images/centerStageSmall.bmp";
+                break;
+            case intoTheDeep:
+                filepath = "/images/intoTheDeep.bmp";
+                break;
+        }
+
+        try {
+            image = ImageIO.read(getClass().getResource(filepath));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return image;
     }
 }

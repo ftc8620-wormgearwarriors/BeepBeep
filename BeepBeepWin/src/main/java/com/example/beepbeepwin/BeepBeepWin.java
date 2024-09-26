@@ -149,21 +149,7 @@ public class BeepBeepWin extends JFrame {
         sprLayout.putConstraint(SpringLayout.SOUTH, getContentPane(),5, SpringLayout.SOUTH, slider);
 
 
-        //WGWsimCore.Background.FIELD_INTOTHEDEEP
-        BufferedImage image=null;
-        // todo fix this file load - can't get images to save in projects as resources?
-        // this path is relative to the "working Directory" set in the "Edit Configuration" section of "run/debug config" dropdown
-        // also need easy way to configure what background to load
-        // centerstage - File file = new File("src\\main\\java\\com\\example\\beepbeepwin\\resources\\images\\centerStageSmall.bmp");
-        File file = new File("src\\main\\java\\com\\example\\beepbeepwin\\resources\\images\\intoTheDeep.bmp");
-        try {
-            image = ImageIO.read(file);
-//            image = ImageIO.read(getClass().getResource("resources/images/intoTheDeep.bmp"));
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        fieldPanel.addLayer(FieldPanel.LayerNames.BACKGROUND, image);
+        fieldPanel.addLayer(FieldPanel.LayerNames.BACKGROUND, wgwSimCore.getBackGroundImage());
 
         robotlayer = new BufferedImage(500, 500, BufferedImage.TYPE_INT_ARGB);
         robotGraphic = robotlayer.getGraphics();
