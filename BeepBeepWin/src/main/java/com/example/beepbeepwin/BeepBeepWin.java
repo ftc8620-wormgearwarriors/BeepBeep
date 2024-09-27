@@ -150,6 +150,7 @@ public class BeepBeepWin extends JFrame {
 
 
         fieldPanel.addLayer(FieldPanel.LayerNames.BACKGROUND, wgwSimCore.getBackGroundImage());
+        setIconImage(wgwSimCore.getBackGroundImage());
 
         robotlayer = new BufferedImage(500, 500, BufferedImage.TYPE_INT_ARGB);
         robotGraphic = robotlayer.getGraphics();
