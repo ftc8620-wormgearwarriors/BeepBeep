@@ -4,11 +4,13 @@ import static javax.swing.SwingConstants.HORIZONTAL;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.example.wgwsimcore.WGWsimCore;
 import java.awt.AlphaComposite;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Stroke;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -30,7 +32,7 @@ public class BeepBeepWin extends JFrame {
     final int SEEK_BAR_SCALE = 10;
 
     BufferedImage robotlayer;
-    Graphics robotGraphic;
+    Graphics2D robotGraphic;
     JTextArea textView;
     JTextArea mouseInfo;
     JSlider slider;
@@ -153,7 +155,7 @@ public class BeepBeepWin extends JFrame {
         setIconImage(wgwSimCore.getBackGroundImage());
 
         robotlayer = new BufferedImage(500, 500, BufferedImage.TYPE_INT_ARGB);
-        robotGraphic = robotlayer.getGraphics();
+        robotGraphic = (Graphics2D) robotlayer.getGraphics();
         fieldPanel.addLayer(FieldPanel.LayerNames.ROBOTS, robotlayer);
         BufferedImage mouseLayer = new BufferedImage(500, 500, BufferedImage.TYPE_INT_ARGB);
         fieldPanel.addLayer(FieldPanel.LayerNames.MOUSE, mouseLayer);
@@ -208,7 +210,7 @@ public class BeepBeepWin extends JFrame {
                     double relativeY = -y * fieldInches / fieldPanel.getHeight() + fieldInches / 2.0;
                     String formatedStr = String.format(Locale.US, "moved x: %.2f   y: %.2f\n", relativeX, relativeY);
                     mouseInfo.setText(formatedStr);
-                    Graphics g = mouseLayer.getGraphics();
+                    Graphics2D g = (Graphics2D) mouseLayer.getGraphics();
                     int xi = (int) ((x * mouseLayer.getWidth()) / fieldPanel.getWidth());
                     int yi = (int) ((y * mouseLayer.getHeight()) / fieldPanel.getHeight());
                     g.setColor(Color.MAGENTA);
@@ -335,6 +337,8 @@ public class BeepBeepWin extends JFrame {
         public void setColor(String colorString) {
             Color color = Color.decode(colorString);
             robotGraphic.setColor(color);
+            robotGraphic.setStroke(new BasicStroke(3));  // set line width for robot drawing
+
         }
 
         @Override

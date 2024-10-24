@@ -266,7 +266,7 @@ public abstract  class WGWsimCore {
                 filepath = "/images/centerStageSmall.bmp";
                 break;
             case intoTheDeep:
-                filepath = "/images/intoTheDeep.bmp";
+                filepath = "/images/intoTheDeep_Fusion.bmp";
                 break;
         }
 
