@@ -303,8 +303,8 @@ public class BeepBeepWin extends JFrame {
         int h = robotlayer.getHeight();
         int w = robotlayer.getWidth();
         double scale = Math.min(h, w) /  wgwSimCore.getFieldDimensionInches();
-        int x = (int) (w / 2 + inch.x * scale);
-        int y = (int) (h / 2 - inch.y * scale);
+        int y = (int) (w / 2 - inch.x * scale);
+        int x = (int) (h / 2 - inch.y * scale);
         return new Vector2d(x,y);
     }
 
@@ -313,8 +313,8 @@ public class BeepBeepWin extends JFrame {
         int h = robotlayer.getHeight();
         int w = robotlayer.getWidth();
         double scale = Math.min(h, w) /  wgwSimCore.getFieldDimensionInches();
-        int x = (int) (inch.x * scale);
-        int y = (int) (inch.y * scale);
+        int y = (int) (inch.x * scale);
+        int x = (int) (inch.y * scale);
         return new Vector2d(x,y);
     }
 
@@ -327,7 +327,7 @@ public class BeepBeepWin extends JFrame {
 
         @Override
         public void drawCircleInches(double xInches, double yInches, double rInches) {
-            Vector2d start  = new Vector2d(xInches-rInches, yInches+rInches );
+            Vector2d start  = new Vector2d(xInches+rInches, yInches+rInches );
             Vector2d end    = new Vector2d(rInches*2, rInches*2);
             robotGraphic.drawOval((int)inch2Pixel(start).x, (int)inch2Pixel(start).y,
                     (int)scaleInch2Pixel(end).x, (int)scaleInch2Pixel(end).y);
