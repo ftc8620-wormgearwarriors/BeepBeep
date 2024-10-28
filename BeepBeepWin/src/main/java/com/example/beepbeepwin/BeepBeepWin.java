@@ -6,6 +6,8 @@ import com.example.wgwsimcore.WGWsimCore;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
@@ -40,6 +42,7 @@ public class BeepBeepWin extends JFrame {
     JButton playPause;
     boolean startNewRun = true;
     boolean showMouseCursor = true;
+    boolean showMouseCompass = true;
 
 
     // initializing using constructor
@@ -162,19 +165,15 @@ public class BeepBeepWin extends JFrame {
         fieldPanel.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
-                float x = mouseEvent.getX();
-                float y = mouseEvent.getY();
-                double fieldInches = wgwSimCore.getFieldDimensionInches();
-                double relativeX =  x * fieldInches / fieldPanel.getWidth() - fieldInches / 2.0;
-                double relativeY = -y * fieldInches / fieldPanel.getHeight() + fieldInches / 2.0;
-                String formatedStr = String.format("clicked x: %.2f   y: %.2f\n", relativeX, relativeY);
-                mouseInfo.setText(formatedStr);
             }
 
             @Override
             public void mousePressed(MouseEvent mouseEvent) {
                 if (mouseEvent.getButton() == MouseEvent.BUTTON2) {
                     showMouseCursor = !showMouseCursor;
+                }
+                if (mouseEvent.getButton() == MouseEvent.BUTTON3) {
+                    showMouseCompass = !showMouseCompass;
                 }
             }
             @Override
@@ -206,16 +205,35 @@ public class BeepBeepWin extends JFrame {
                     float x = mouseEvent.getX();
                     float y = mouseEvent.getY();
                     double fieldInches = wgwSimCore.getFieldDimensionInches();
-                    double relativeX = x * fieldInches / fieldPanel.getWidth() - fieldInches / 2.0;
-                    double relativeY = -y * fieldInches / fieldPanel.getHeight() + fieldInches / 2.0;
-                    String formatedStr = String.format(Locale.US, "moved x: %.2f   y: %.2f\n", relativeX, relativeY);
+                    double relativeY = -x * fieldInches / fieldPanel.getWidth() + fieldInches / 2.0;
+                    double relativeX = -y * fieldInches / fieldPanel.getHeight() + fieldInches / 2.0;
+                    String formatedStr = String.format(Locale.US, "Mouse at x: %.2f   y: %.2f\n", relativeX, relativeY);
                     mouseInfo.setText(formatedStr);
                     Graphics2D g = (Graphics2D) mouseLayer.getGraphics();
-                    int xi = (int) ((x * mouseLayer.getWidth()) / fieldPanel.getWidth());
-                    int yi = (int) ((y * mouseLayer.getHeight()) / fieldPanel.getHeight());
+                    int layerHeight = mouseLayer.getHeight();
+                    int layerWidth = mouseLayer.getWidth();
+                    int xi = (int) ((x * layerWidth) / fieldPanel.getWidth());
+                    int yi = (int) ((y * layerHeight) / fieldPanel.getHeight());
                     g.setColor(Color.MAGENTA);
-                    g.drawLine(xi, 0, xi, mouseLayer.getHeight());
-                    g.drawLine(0, yi, mouseLayer.getWidth(), yi);
+                    g.drawLine(xi, 0, xi, layerHeight); // draw cross hairs
+                    g.drawLine(0, yi, layerWidth, yi);
+                    if (showMouseCompass) {
+                        g.setFont(new Font("Courier New", Font.PLAIN, 16));
+                        g.setColor(Color.YELLOW);
+                        FontMetrics fm = g.getFontMetrics();
+                        int fontHeight = fm.getHeight();
+                        int hideSize = fontHeight * 4;
+                        if (yi > (hideSize))
+                            g.drawString(" +X 0\u00B0", xi, fontHeight * 2);
+                        if (yi < layerHeight - hideSize)
+                            g.drawString(" -X 180\u00B0", xi, layerHeight - fontHeight * 2);
+                        if (xi > hideSize)
+                            g.drawString(" +Y 90\u00B0", 0, yi - 2);
+                        String str = "-Y 270\u00B0";
+                        int strWidth = fm.stringWidth(str);
+                        if (xi < layerWidth - strWidth)
+                            g.drawString(str, layerWidth - strWidth, yi - 2);
+                    }
                 }
             }
         });
