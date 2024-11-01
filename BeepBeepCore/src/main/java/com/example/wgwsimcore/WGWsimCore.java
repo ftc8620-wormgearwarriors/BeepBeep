@@ -51,6 +51,8 @@ public abstract  class WGWsimCore {
 
     public abstract void setColor(String color);
 
+    public abstract void setStrokeWidth(int width);
+
     public abstract void telemetryTextAddLine(String str);
 
     public abstract void telemetryTextClear();
@@ -249,6 +251,13 @@ public abstract  class WGWsimCore {
                         double radius = op.getDouble("radius");
                         drawCircleInches(x,y,radius);
                         break;
+                    case "strokeWidth":
+                        int width = op.getInt("width");
+                        setStrokeWidth(width);
+                        break;
+                    default:
+                        break;
+
                 }
             }
         } catch (JSONException e) {

@@ -355,8 +355,12 @@ public class BeepBeepWin extends JFrame {
         public void setColor(String colorString) {
             Color color = Color.decode(colorString);
             robotGraphic.setColor(color);
-            robotGraphic.setStroke(new BasicStroke(3));  // set line width for robot drawing
+//            robotGraphic.setStroke(new BasicStroke(3));  // set line width for robot drawing
+        }
 
+        @Override
+        public void setStrokeWidth(int width) {
+            robotGraphic.setStroke(new BasicStroke(width * 2));  // set line width for robot drawing
         }
 
         @Override

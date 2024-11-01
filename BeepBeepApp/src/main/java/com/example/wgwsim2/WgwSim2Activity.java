@@ -113,6 +113,11 @@ public class WgwSim2Activity extends AppCompatActivity {
         }
 
         @Override
+        public void setStrokeWidth(int width) {
+            workingPaint.setStrokeWidth(width*10);
+        }
+
+        @Override
         public void telemetryTextAddLine(String str) {
             textView.append(str);
         }
