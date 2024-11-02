@@ -29,18 +29,16 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.acmerobotics.roadrunner.Vector2d;
 import com.example.wgwsim2.databinding.ActivityWgwSim2Binding;
-import com.example.wgwsimcore.WGWsimCore;
+import com.example.wgwsimcore.BeepBeepCore;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
 
-public class WgwSim2Activity extends AppCompatActivity { 
+public class BeepBeepApp extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityWgwSim2Binding binding;
@@ -83,14 +81,14 @@ public class WgwSim2Activity extends AppCompatActivity {
         int h = workingCanvas.getHeight();
         int w = workingCanvas.getWidth();
 
-        double scale = Math.min(h, w) /  wgwSimCore.getFieldDimensionInches();
-        int x = (int) (w / 2 + inch.x * scale);
-        int y = (int) (h / 2 - inch.y * scale);
+        double scale = Math.min(h, w) /  beepbeepCore.getFieldDimensionInches();
+        int y = (int) (w / 2 - inch.x * scale);
+        int x = (int) (h / 2 - inch.y * scale);
 
         return new Vector2d(x,y);
     }
 
-    WGWsimCore wgwSimCore = new WGWsimCore() {
+    BeepBeepCore beepbeepCore = new BeepBeepCore() {
         @Override
         public void drawLineInches(Vector2d start, Vector2d end) {
             workingCanvas.drawLine((float)inch2Pixel(start).x, (float)inch2Pixel(start).y,
@@ -129,7 +127,7 @@ public class WgwSim2Activity extends AppCompatActivity {
     };
 
     void setPausePLay(){
-        if (wgwSimCore.isPaused()) {
+        if (beepbeepCore.isPaused()) {
             playPauseButton.setImageResource(R.drawable.play_icon);
         } else {
             // want   app:srcCompat="@android:drawable/ic_media_pause"
@@ -155,7 +153,16 @@ public class WgwSim2Activity extends AppCompatActivity {
         ftcFieldView = findViewById(R.id.ftcFieldView);
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inMutable = true;
-        fieldBMP = BitmapFactory.decodeResource(getResources(), R.drawable.fieldsmall, options);
+
+        switch (beepbeepCore.getBackGroundNumber()) {
+            case 1:
+                fieldBMP = BitmapFactory.decodeResource(getResources(), R.drawable.centerstagesmall, options);
+                break;
+            case 2:
+            default:
+                fieldBMP = BitmapFactory.decodeResource(getResources(), R.drawable.intothedeep_fusion, options);
+        }
+
 
         ftcFieldView.setImageBitmap(fieldBMP); // put up the field view
         seekBar = findViewById(R.id.seekBar2);
@@ -185,7 +192,7 @@ public class WgwSim2Activity extends AppCompatActivity {
                         break;
                     default: return;
                 }
-                for (int robotNum = 1; robotNum <= wgwSimCore.getNumRobots(); robotNum++) {   // all robots, clear telemetry
+                for (int robotNum = 1; robotNum <= beepbeepCore.getNumRobots(); robotNum++) {   // all robots, clear telemetry
                     EnabledPaths path  =  enabledPaths.get(MENU_ID_ROBOT * robotNum + 1);
                     if (path != null) {
                         if (! path.enabled) // is robot enabled?
@@ -218,10 +225,10 @@ public class WgwSim2Activity extends AppCompatActivity {
 //                Snackbar.make(view, "Playing Red Side", Snackbar.LENGTH_LONG)
 //                        .setAnchorView(R.id.PlayBlueSide)
 //                        .setAction("Action", null).show();
-                if (wgwSimCore.isPaused()) {
-                    wgwSimCore.unpause();
+                if (beepbeepCore.isPaused()) {
+                    beepbeepCore.unpause();
                 } else {
-                    wgwSimCore.pauseAction();
+                    beepbeepCore.pauseAction();
                 }
                 setPausePLay();
             }
@@ -243,7 +250,7 @@ public class WgwSim2Activity extends AppCompatActivity {
                 // values[2] and values[5] are the x,y coordinates of the top left corner of the drawable image, regardless of the zoom factor.
                 // values[0] and values[4] are the zoom factors for the image's width and height respectively. If you zoom at the same factor, these should both be the same value.
                 // first find pixel locaiton in origional image, then scale to inches, then offset so 0,0 is center of field
-                double fieldInches = wgwSimCore.getFieldDimensionInches();
+                double fieldInches = beepbeepCore.getFieldDimensionInches();
                 double relativeX = ( (x - values[2]) / values[0]) * fieldInches / fieldBMP.getHeight() - fieldInches / 2.0;
                 double relativeY = (-(y - values[5]) / values[4]) * fieldInches / fieldBMP.getHeight() + fieldInches / 2.0;
 
@@ -273,8 +280,8 @@ public class WgwSim2Activity extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int progress,
             boolean fromUser) {
                 if (fromUser){
-                    double time = ((double)progress / seekBar.getMax()) * wgwSimCore.getActionDuration();
-                    wgwSimCore.showAtTimeMs(time);
+                    double time = ((double)progress / seekBar.getMax()) * beepbeepCore.getActionDuration();
+                    beepbeepCore.showAtTimeMs(time);
                     setPausePLay();
                 }
             }
@@ -288,13 +295,13 @@ public class WgwSim2Activity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_wgw_sim2, menu);
 
         int robotItemNum = MENU_ID_ROBOT;
-        for (int robotNum = 0; robotNum< wgwSimCore.getNumRobots(); robotNum++) {   // all robots, clear telemetry
-            String robotname = wgwSimCore.getRobotName(robotNum);
+        for (int robotNum = 0; robotNum< beepbeepCore.getNumRobots(); robotNum++) {   // all robots, clear telemetry
+            String robotname = beepbeepCore.getRobotName(robotNum);
             menu.addSubMenu(0, robotItemNum, Menu.NONE, robotname);
             SubMenu submenu = menu.findItem(robotItemNum).getSubMenu();
             assert submenu != null;
             submenu.clear();
-            List<String> names = wgwSimCore.getActionNames(robotNum);
+            List<String> names = beepbeepCore.getActionNames(robotNum);
             int subItem = robotItemNum+1;
             submenu.add(1,subItem /*subItem*/, Menu.NONE, "Disabled");
             enabledPaths.put(subItem++,new EnabledPaths(robotNum, -1,false, ""));
@@ -314,7 +321,7 @@ public class WgwSim2Activity extends AppCompatActivity {
             // later by the spinner.setOnItemSelectedListener
             // robots that are dissabled will not have a path assigned by spinner and stay dissabled
             // until user picks a path for them
-            if ( !wgwSimCore.getRobotEnabled(robotNum)) {
+            if ( !beepbeepCore.getRobotEnabled(robotNum)) {
                 int defaultItem = robotItemNum+1;
                 MenuItem menuItem = menu.findItem(defaultItem);
                 menuItem.setChecked(true);
@@ -385,20 +392,20 @@ public class WgwSim2Activity extends AppCompatActivity {
         @Override
         public void run() {
 
-            handler.postDelayed(this, wgwSimCore.getTimerTickms());
+            handler.postDelayed(this, beepbeepCore.getTimerTickms());
 
             if (startNewRun) {
                 startNewRun = false;
                 ftcFieldView.setImageBitmap(workingBmp); //
-                wgwSimCore.clearRobotActions();
+                beepbeepCore.clearRobotActions();
                 Set<Integer> keys = enabledPaths.keySet();
                 for (Integer key : keys) {
                     EnabledPaths path = enabledPaths.get(key);
                     if (path.enabled) {
-                        wgwSimCore.setCurrentAction(path.robotIndex, path.name);
+                        beepbeepCore.setCurrentAction(path.robotIndex, path.name);
                     }
                 }
-                wgwSimCore.startAction();
+                beepbeepCore.startAction();
             }
 
             workingBmp = fieldBMP.copy(fieldBMP.getConfig(), true);  // make a local copy
@@ -408,17 +415,17 @@ public class WgwSim2Activity extends AppCompatActivity {
             workingPaint.setStrokeWidth(10); //30
             workingPaint.setStyle(Paint.Style.STROKE);
 
-            wgwSimCore.clearNewFieldOverlay();
-            wgwSimCore.timerTick();
-            if (wgwSimCore.isNewFieldOverlay()) {
+            beepbeepCore.clearNewFieldOverlay();
+            beepbeepCore.timerTick();
+            if (beepbeepCore.isNewFieldOverlay()) {
                 ftcFieldView.setImageBitmap(workingBmp);
             }
 
-            double time = wgwSimCore.getCurrentTimeMs();
-            seekBar.setProgress((int) ( (double)seekBar.getMax() * time / wgwSimCore.getActionDuration() ));
+            double time = beepbeepCore.getCurrentTimeMs();
+            seekBar.setProgress((int) ( (double)seekBar.getMax() * time / beepbeepCore.getActionDuration() ));
 
-            time = wgwSimCore.getsimTimeMs();
-            seekBar.setSecondaryProgress((int)( (double)seekBar.getMax() * time / wgwSimCore.getActionDuration() ));
+            time = beepbeepCore.getsimTimeMs();
+            seekBar.setSecondaryProgress((int)( (double)seekBar.getMax() * time / beepbeepCore.getActionDuration() ));
 
         }
     };

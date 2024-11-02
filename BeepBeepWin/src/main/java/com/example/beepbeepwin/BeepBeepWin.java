@@ -2,17 +2,15 @@ package com.example.beepbeepwin;
 
 import static javax.swing.SwingConstants.HORIZONTAL;
 import com.acmerobotics.roadrunner.Vector2d;
-import com.example.wgwsimcore.WGWsimCore;
+import com.example.wgwsimcore.BeepBeepCore;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Stroke;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -20,13 +18,9 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class BeepBeepWin extends JFrame {
@@ -336,7 +330,7 @@ public class BeepBeepWin extends JFrame {
         return new Vector2d(x,y);
     }
 
-    WGWsimCore wgwSimCore = new WGWsimCore() {
+    BeepBeepCore wgwSimCore = new BeepBeepCore() {
         @Override
         public void drawLineInches(Vector2d start, Vector2d end) {
             robotGraphic.drawLine((int)inch2Pixel(start).x, (int)inch2Pixel(start).y,

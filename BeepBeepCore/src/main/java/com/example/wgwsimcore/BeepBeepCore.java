@@ -16,7 +16,6 @@ import org.json.JSONObject;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +28,7 @@ import javax.imageio.ImageIO;
 // with the gui and system resources.
 // this allow easy use on a phone app, simulator, windows executable etc.
 // exampe:  https://www.baeldung.com/java-template-method-pattern
-public abstract  class WGWsimCore {
+public abstract  class BeepBeepCore {
 
     private final double    fieldSizeInches = 144.0;
     private final Robots    robots = new Robots();
@@ -285,5 +284,20 @@ public abstract  class WGWsimCore {
             throw new RuntimeException(e);
         }
         return image;
+    }
+
+    // issue with type of BMP used awt vs android apps.  Do a bad thing and hardcode it. )
+    public int getBackGroundNumber (){
+        int retVal=1;
+
+        switch (robots.background) {
+            case centerStage:
+                retVal = 1;
+                break;
+            case intoTheDeep:
+                retVal = 2;
+                break;
+        }
+        return retVal;
     }
 }

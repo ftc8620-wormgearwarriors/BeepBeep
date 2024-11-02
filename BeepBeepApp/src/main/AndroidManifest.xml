@@ -9,7 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CenterStage">
         <activity
-            android:name=".WgwSim2Activity"
+            android:name=".BeepBeepApp"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.CenterStage">
