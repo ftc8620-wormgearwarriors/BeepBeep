@@ -132,10 +132,12 @@ public abstract  class BeepBeepCore {
             startNewRun = false;
             paused = false;
             runCount = 0;
-//            needRobotList.clearTelemetryHistory();  // todo telemetryHistory.clear();
             for (int i=0; i< robots.simRobots.size(); i++) {   // all robots, clear telemetry
                 SimRobot robot = robots.simRobots.get(i);
                 robot.clearTelemetryHistory();
+                TelemetryPacket dashTelemetryPacket = new TelemetryPacket();
+                robot.preview(dashTelemetryPacket);
+                robot.putTelemetryHistory(dashTelemetryPacket);  // store the packet for later use
             }
             robots.startGameTimer();
 
