@@ -57,11 +57,17 @@ A full understand of Roadrunner is encouraged, please read all of their document
 7) Any module that will use roadrunner should include this line in it’s gradle file (instead of above lines)  
    `apply from: '../../build.RoardRunnerCommon.gradle'`
 8) Add a module to store the trajectories.  We named this TranectoryActions.  This module should be at the same level FTCRobotController and TeamCode.
-    1) use project view and add to top level.
-    2) Create a java library module with the name TrajectoryActions
-    3) Change Java Version to “VERSION\_1\_8”
-    4) Add add this line to use our global roadrunner version  
-       `apply from: '../../build.RoardRunnerCommon.gradle'`
+    1) use project view and add to top level.  
+       \<p align="center"\>  
+       \<img src="doc/CreateNewModule.JPG" /\>  
+       \</p\>  
+       \<p align="center"\>(Courtesy of FTC Team 8393, Detroit 2019 Ochoa F2)\</p\>
+
+
+2) Create a java library module with the name TrajectoryActions
+3) Change Java Version to “VERSION\_1\_8”
+4) Add add this line to use our global roadrunner version  
+   `apply from: '../../build.RoardRunnerCommon.gradle'`
 9) Edit settings.gradle (Project Setting)
     1) Add these  lines
 
