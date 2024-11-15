@@ -80,5 +80,6 @@ A full understand of Roadrunner is encouraged, please read all of their document
        `include ':trajectoryActions'`
 
 10) Synch project with gradle files to make sure project structure is updated.
+![CreateNewModule](https://github.com/user-attachments/assets/ce6dc3df-2305-40b9-86fd-20d44e159ab0)
 
 ### 
