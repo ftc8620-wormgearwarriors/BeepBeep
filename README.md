@@ -59,9 +59,9 @@ A full understand of Roadrunner is encouraged, please read all of their document
        }
     ```
 8) Any module that will use roadrunner should include this line in it’s gradle file (instead of above lines).  This will include build.gradle for TeamCode and BeepBeep
-   `apply from: '../../build.RoardRunnerCommon.gradle'`
+   `apply from: '../build.RoardRunnerCommon.gradle'`
 9) Add a module to store the trajectories.  We named this TrajectoryActions.  This module should be at the same level as FTCRobotController and TeamCode.
-   * use project view and add to top level.
+   * use project view and add to top level. Clock on top level of project left window.  File->NewModule, and the files to GIT when prompted.
         ![CreateNewModule](https://github.com/user-attachments/assets/ce6dc3df-2305-40b9-86fd-20d44e159ab0)
    * Create a java library module with the name TrajectoryActions
    * Change Java Version to “VERSION\_1\_8”
