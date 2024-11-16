@@ -50,11 +50,11 @@ A full understand of Roadrunner is encouraged, please read all of their document
 
     ```
        repositories {
-       maven { url = 'https://maven.brott.dev/' }
+           maven { url = 'https://maven.brott.dev/' }
        }
        dependencies {
-       implementation 'com.acmerobotics.roadrunner:core:1.0.0-beta3'
-       implementation 'com.acmerobotics.roadrunner:actions:1.0.0-beta3'
+           implementation 'com.acmerobotics.roadrunner:core:1.0.0-beta3'
+           implementation 'com.acmerobotics.roadrunner:actions:1.0.0-beta3'
        }
     ```
    `repositories {`  
