@@ -45,8 +45,12 @@ A full understand of Roadrunner is encouraged, please read all of their document
 3) Make sure this project builds and RR is working
 4) Fork BeepBeep into your own repo for easy modification and source control.
 5) In your fork of BeepBeep go to \<\>code and copy the URL, use it in next step.
-6) Add the BeepBeep Submodule - Select the terminal tab in the bottom window and enter the commend:   
-   `Git submodule add https://github.com/your-repo/BeepBeep.git`
+6) Add the BeepBeep Submodule - Select the terminal tab in the bottom window and enter the commend:
+
+`Git submodule add https://github.com/your-repo/BeepBeep.git`
+
+   ![addSubmodule](https://github.com/user-attachments/assets/1ab683f5-b537-4aa2-9d44-466a09269511)
+
 7) Common version of RoadRunner - To ensure the same version of roadrunner is used by the simulator and the physical robot we need to define the version in a single location.  This is done at the top level of the project by creating a gradile file “build.RoardRunnerCommon.gradle” with the lines: (this file could be copied BeepBeep sample project)
 
     ```java
@@ -70,7 +74,7 @@ A full understand of Roadrunner is encouraged, please read all of their document
    * edit TrajectoryActions build.gradle and add this line to to use our global roadrunner version
      `apply from: '../../build.RoardRunnerCommon.gradle'`
      Change Java Version to “VERSION\_1\_8”
-10) Copy sample files from TrajectoryActions directory into your projects TrajectoryActions directory.
+11) Copy sample files from TrajectoryActions directory into your projects TrajectoryActions directory.
      [https://github.com/codeShareFTC/BeepBeepSampleProject/TrajectoryActions/]  Check this link!!!
 12)  Edit settings.gradle (Project Setting)
     1) Add these  lines
