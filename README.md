@@ -98,7 +98,8 @@ If you have already added a BeepBeep to your project and have it it GitHub and n
 ## Edit Configurations
 1) add BeepBeepWin (windows executable, the prefered way)
     * Note the working directory must be `$MODULE_DIR$`
-    ![BeepBeepWin Add Configuration](https://github.com/user-attachments/assets/77822544-29a5-4210-91cc-3f50fe762afe)
+    ![EditConfigurationBeepBeepWin](https://github.com/user-attachments/assets/8f38cd03-9184-4fe6-ba40-70a10a72f4a2)
+
 
 2) add BeepBeepApp (android app / phone simulator) if needed
     ![BeepBeepApp Add Configuration](https://github.com/user-attachments/assets/7fb1323c-a773-4b72-9212-b7b145998546)
