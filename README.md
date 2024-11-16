@@ -79,12 +79,14 @@ A full understand of Roadrunner is encouraged, please read all of their document
      [https://github.com/codeShareFTC/BeepBeepSampleProject/TrajectoryActions/]  Check this link!!!
 11)  Edit settings.gradle (Project Setting)
     1) Add these  lines
-       `include ':BeepBeep:BeepBeepCore'`
-       `include ':BeepBeep:BeepBeepWin'`
-       `include ':BeepBeep:BeepBeepApp'`
-       `include ':TrajectoryActions'`
+     ```java 
+       include ':BeepBeep:BeepBeepCore'
+       include ':BeepBeep:BeepBeepWin'
+       include ':BeepBeep:BeepBeepApp'
+       include ':TrajectoryActions'
+     ```
      
-12) Synch project with gradle files to make sure project structure is updated.
+13) Synch project with gradle files to make sure project structure is updated.
 
 ## Clonning a project from GIT that already hass BeepBeep installed
 If you have already added a BeepBeep to your project and have it it GitHub and now want to clone that repo to another computer do this section. 
