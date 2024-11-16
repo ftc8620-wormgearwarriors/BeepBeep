@@ -33,20 +33,21 @@ In addition to the BeepBeep submodule you will need a module in your project tha
 
 ## Prerequisite
 
-BeepBeep depends on the Action class in RoadRunner.  Please review the RR documentation for a better understanding of actions and VSequentialAction  
+BeepBeep depends on the Action class in RoadRunner.  Please review the RR documentation for a better understanding of actions and SequentialAction  
 [https://rr.brott.dev/docs/v1-0/actions/](https://rr.brott.dev/docs/v1-0/actions/)   
 A full understand of Roadrunner is encouraged, please read all of their documentation.  BeepBeep examples show how to mirror trajectories from the Red to Blue side of the field allowing you to only have to maintain trajectories for the one side of the field.  When you find yourself needing to tweak the numbers between what should be identical paths, it is most likely an error in your RR setup/tuning or an incorrect start position for how you are physically placing your robot on the field.  We find RR accurate enough to run the same code on both sides of the field\!
 
 
 ## Installation into project:
 
-1) First you need a project that includes the FTC SDK and RoadRunner. See RR documentation at  [https://rr.brott.dev/docs/v1-0/installation/](https://rr.brott.dev/docs/v1-0/installation/) for details.
-2) Make sure this project builds and RR is working
-3) Fork BeepBeep into your own repo for easy modification and source control.
-4) In your fork of BeepBeep go to \<\>code and copy the URL, use it in next step.
-5) Add the BeepBeep Submodule - Select the terminal tab in the bottom window and enter the commend:   
+1) We have provided a BeepBeep sammple example project.  PLEASE do not clone this sample project.  Use it for reference and you may pull sample files from it.  This sample project may not be kept up to date with RoadRunner or BeepBeep.  Clone those repos directly, not the sample project. [https://github.com/codeShareFTC/BeepBeepSampleProject]
+2)  First you need a project that includes the FTC SDK and RoadRunner. See RR documentation at  [https://rr.brott.dev/docs/v1-0/installation/](https://rr.brott.dev/docs/v1-0/installation/) for details.
+3) Make sure this project builds and RR is working
+4) Fork BeepBeep into your own repo for easy modification and source control.
+5) In your fork of BeepBeep go to \<\>code and copy the URL, use it in next step.
+6) Add the BeepBeep Submodule - Select the terminal tab in the bottom window and enter the commend:   
    `Git submodule add https://github.com/your-repo/BeepBeep.git`
-6) Common version of RoadRunner - To ensure the same version of roadrunner is used by the simulator and the physical robot we need to define the version in a single location.  This is done at the top level of the project and creating a gradile file “build.RoardRunnerCommon.gradle” with the lines:
+7) Common version of RoadRunner - To ensure the same version of roadrunner is used by the simulator and the physical robot we need to define the version in a single location.  This is done at the top level of the project and creating a gradile file “build.RoardRunnerCommon.gradle” with the lines:
 
     ```java
        repositories {
@@ -57,22 +58,24 @@ A full understand of Roadrunner is encouraged, please read all of their document
            implementation 'com.acmerobotics.roadrunner:actions:1.0.0-beta3'
        }
     ```
-7) Any module that will use roadrunner should include this line in it’s gradle file (instead of above lines)  
+8) Any module that will use roadrunner should include this line in it’s gradle file (instead of above lines)  
    `apply from: '../../build.RoardRunnerCommon.gradle'`
-8) Add a module to store the trajectories.  We named this TrajectoryActions.  This module should be at the same level as FTCRobotController and TeamCode.
+9) Add a module to store the trajectories.  We named this TrajectoryActions.  This module should be at the same level as FTCRobotController and TeamCode.
    * use project view and add to top level.
         ![CreateNewModule](https://github.com/user-attachments/assets/ce6dc3df-2305-40b9-86fd-20d44e159ab0)
    * Create a java library module with the name TrajectoryActions
    * Change Java Version to “VERSION\_1\_8”
    * edit TrajectoryActions build.gradle and add this line to to use our global roadrunner version
      `apply from: '../../build.RoardRunnerCommon.gradle'`
-9) Edit settings.gradle (Project Setting)
+10) Copy sample files from TrajectoryActions directory into your projects TrajectoryActions directory.
+     [https://github.com/codeShareFTC/BeepBeepSampleProject/TrajectoryActions/]  Check this link!!!
+12)  Edit settings.gradle (Project Setting)
     1) Add these  lines
        `include ':BeepBeep:BeepBeepApp'`
        `include ':BeepBeep:BeepBeepCore'`
        `include ':BeepBeep:BeepBeepWin'`
        `include ':trajectoryActions'`
-10) Synch project with gradle files to make sure project structure is updated.
+13) Synch project with gradle files to make sure project structure is updated.
 
 ## Clonning a project from GIT that already hass BeepBeep installed
 If you have already added a BeepBeep to your project and have it it GitHub and now want to clone that repo to another computer do this section. 
