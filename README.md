@@ -47,15 +47,15 @@ A full understand of Roadrunner is encouraged, please read all of their document
 5) In your fork of BeepBeep go to \<\>code and copy the URL, use it in next step.
 6) Add the BeepBeep Submodule - Select the terminal tab in the bottom window and enter the commend:   
    `Git submodule add https://github.com/your-repo/BeepBeep.git`
-7) Common version of RoadRunner - To ensure the same version of roadrunner is used by the simulator and the physical robot we need to define the version in a single location.  This is done at the top level of the project and creating a gradile file “build.RoardRunnerCommon.gradle” with the lines:
+7) Common version of RoadRunner - To ensure the same version of roadrunner is used by the simulator and the physical robot we need to define the version in a single location.  This is done at the top level of the project by creating a gradile file “build.RoardRunnerCommon.gradle” with the lines: (this file could be copied BeepBeep sample project)
 
     ```java
        repositories {
            maven { url = 'https://maven.brott.dev/' }
        }
        dependencies {
-           implementation 'com.acmerobotics.roadrunner:core:1.0.0-beta3'
-           implementation 'com.acmerobotics.roadrunner:actions:1.0.0-beta3'
+           implementation 'com.acmerobotics.roadrunner:core:1.0.0'
+           implementation 'com.acmerobotics.roadrunner:actions:1.0.0'
        }
     ```
 8) Any module that will use roadrunner should include this line in it’s gradle file (instead of above lines)  
