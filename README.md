@@ -63,7 +63,9 @@ A full understand of Roadrunner is encouraged, please read all of their document
 9) Add a module to store the trajectories.  We named this TrajectoryActions.  This module should be at the same level as FTCRobotController and TeamCode.
    * use project view and add to top level. Clock on top level of project left window.  File->NewModule, and the files to GIT when prompted.
      
-        ![CreateNewModule](https://github.com/user-attachments/assets/ce6dc3df-2305-40b9-86fd-20d44e159ab0)
+        
+        ![AddModuleTrajectoryActions](https://github.com/user-attachments/assets/85bdda16-709f-4bc7-8f1a-d819afb64cf5)
+
      
    * edit TrajectoryActions build.gradle and add this line to to use our global roadrunner version
      `apply from: '../../build.RoardRunnerCommon.gradle'`
