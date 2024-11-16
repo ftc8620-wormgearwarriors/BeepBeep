@@ -46,19 +46,29 @@ A full understand of Roadrunner is encouraged, please read all of their document
 4) In your fork of BeepBeep go to \<\>code and copy the URL, use it in next step.
 5) Add the BeepBeep Submodule Select the terminal tab in the bottom window and enter the commend:   
    `Git submodule add https://github.com/your-repo/BeepBeep.git`
-6) Common version of RoadRunner  To ensure the same version of roadrunner is used by the simulator and the physical robot we need to define the version in a single location.  This is done at the top level of the project and creating a gradile file “build.RoardRunnerCommon.gradle” with the lines:  
+6) Common version of RoadRunner  To ensure the same version of roadrunner is used by the simulator and the physical robot we need to define the version in a single location.  This is done at the top level of the project and creating a gradile file “build.RoardRunnerCommon.gradle” with the lines:
+
+    ```
+       repositories {
+       maven { url = 'https://maven.brott.dev/' }
+       }
+       dependencies {
+       implementation 'com.acmerobotics.roadrunner:core:1.0.0-beta3'
+       implementation 'com.acmerobotics.roadrunner:actions:1.0.0-beta3'
+       }
+    ```
    `repositories {`  
-   `maven { url = 'https://maven.brott.dev/' }`  
+   `    maven { url = 'https://maven.brott.dev/' }`  
    **`}`**  
    `dependencies {`  
-   `implementation 'com.acmerobotics.roadrunner:core:1.0.0-beta3'`  
-   `implementation 'com.acmerobotics.roadrunner:actions:1.0.0-beta3'`  
+   `    implementation 'com.acmerobotics.roadrunner:core:1.0.0-beta3'`  
+   `    implementation 'com.acmerobotics.roadrunner:actions:1.0.0-beta3'`  
    **`}`**
 7) Any module that will use roadrunner should include this line in it’s gradle file (instead of above lines)  
    `apply from: '../../build.RoardRunnerCommon.gradle'`
 8) Add a module to store the trajectories.  We named this TranectoryActions.  This module should be at the same level FTCRobotController and TeamCode.
    * use project view and add to top level.
-   * ![CreateNewModule](https://github.com/user-attachments/assets/ce6dc3df-2305-40b9-86fd-20d44e159ab0)
+        ![CreateNewModule](https://github.com/user-attachments/assets/ce6dc3df-2305-40b9-86fd-20d44e159ab0)
    * Create a java library module with the name TrajectoryActions
    * Change Java Version to “VERSION\_1\_8”
    * Add add this line to use our global roadrunner version
