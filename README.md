@@ -45,36 +45,47 @@ A full understand of Roadrunner is encouraged, please read all of their document
 3) Make sure this project builds and RR is working
 4) Fork BeepBeep into your own repo for easy modification and source control.
 5) In your fork of BeepBeep go to \<\>code and copy the URL, use it in next step.
-6) Add the BeepBeep Submodule - Select the terminal tab in the bottom window and enter the commend:   
-   `Git submodule add https://github.com/your-repo/BeepBeep.git`
-7) Common version of RoadRunner - To ensure the same version of roadrunner is used by the simulator and the physical robot we need to define the version in a single location.  This is done at the top level of the project and creating a gradile file “build.RoardRunnerCommon.gradle” with the lines:
+6) Add the BeepBeep Submodule - Select the terminal tab in the bottom window and enter the commend:
+
+`Git submodule add https://github.com/your-repo/BeepBeep.git`
+
+   ![addSubmodule](https://github.com/user-attachments/assets/1ab683f5-b537-4aa2-9d44-466a09269511)
+
+7) Common version of RoadRunner - To ensure the same version of roadrunner is used by the simulator and the physical robot we need to define the version in a single location.  This is done at the top level of the project by creating a gradile file “build.RoardRunnerCommon.gradle” with the lines: (this file could be copied BeepBeep sample project)
 
     ```java
        repositories {
            maven { url = 'https://maven.brott.dev/' }
        }
        dependencies {
-           implementation 'com.acmerobotics.roadrunner:core:1.0.0-beta3'
-           implementation 'com.acmerobotics.roadrunner:actions:1.0.0-beta3'
+           implementation 'com.acmerobotics.roadrunner:core:1.0.0'
+           implementation 'com.acmerobotics.roadrunner:actions:1.0.0'
        }
     ```
-8) Any module that will use roadrunner should include this line in it’s gradle file (instead of above lines)  
-   `apply from: '../../build.RoardRunnerCommon.gradle'`
+8) Any module that will use roadrunner should include this line in it’s gradle file (instead of above lines).  This will include build.gradle for TeamCode and BeepBeep
+   `apply from: '../build.RoardRunnerCommon.gradle'`
 9) Add a module to store the trajectories.  We named this TrajectoryActions.  This module should be at the same level as FTCRobotController and TeamCode.
-   * use project view and add to top level.
-        ![CreateNewModule](https://github.com/user-attachments/assets/ce6dc3df-2305-40b9-86fd-20d44e159ab0)
-   * Create a java library module with the name TrajectoryActions
-   * Change Java Version to “VERSION\_1\_8”
+   * use project view and add to top level. Clock on top level of project left window.  File->NewModule, and the files to GIT when prompted.
+     
+        
+        ![AddModuleTrajectoryActions](https://github.com/user-attachments/assets/85bdda16-709f-4bc7-8f1a-d819afb64cf5)
+
+     
    * edit TrajectoryActions build.gradle and add this line to to use our global roadrunner version
-     `apply from: '../../build.RoardRunnerCommon.gradle'`
-10) Copy sample files from TrajectoryActions directory into your projects TrajectoryActions directory.
+     `apply from: '../build.RoardRunnerCommon.gradle'`
+     Change Java Version to “VERSION\_1\_8”
+     
+10) Copy sample files from TrajectoryActions directory into your projects TrajectoryActions directory. Add to GIT when prompted.
      [https://github.com/codeShareFTC/BeepBeepSampleProject/TrajectoryActions/]  Check this link!!!
-12)  Edit settings.gradle (Project Setting)
+11)  Edit settings.gradle (Project Setting)
     1) Add these  lines
-       `include ':BeepBeep:BeepBeepApp'`
-       `include ':BeepBeep:BeepBeepCore'`
-       `include ':BeepBeep:BeepBeepWin'`
-       `include ':trajectoryActions'`
+     ```java 
+       include ':BeepBeep:BeepBeepCore'
+       include ':BeepBeep:BeepBeepWin'
+       include ':BeepBeep:BeepBeepApp'
+       include ':TrajectoryActions'
+     ```
+     
 13) Synch project with gradle files to make sure project structure is updated.
 
 ## Clonning a project from GIT that already hass BeepBeep installed
@@ -87,7 +98,8 @@ If you have already added a BeepBeep to your project and have it it GitHub and n
 ## Edit Configurations
 1) add BeepBeepWin (windows executable, the prefered way)
     * Note the working directory must be `$MODULE_DIR$`
-    ![BeepBeepWin Add Configuration](https://github.com/user-attachments/assets/77822544-29a5-4210-91cc-3f50fe762afe)
+    ![EditConfigurationBeepBeepWin](https://github.com/user-attachments/assets/8f38cd03-9184-4fe6-ba40-70a10a72f4a2)
+
 
 2) add BeepBeepApp (android app / phone simulator) if needed
     ![BeepBeepApp Add Configuration](https://github.com/user-attachments/assets/7fb1323c-a773-4b72-9212-b7b145998546)
