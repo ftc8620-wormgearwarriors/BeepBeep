@@ -74,9 +74,11 @@ A full understand of Roadrunner is encouraged, please read all of their document
    * edit TrajectoryActions build.gradle and add this line to to use our global roadrunner version
      `apply from: '../../build.RoardRunnerCommon.gradle'`
      Change Java Version to “VERSION\_1\_8”
-11) Copy sample files from TrajectoryActions directory into your projects TrajectoryActions directory.
+     
+10) Copy sample files from TrajectoryActions directory into your projects TrajectoryActions directory. Add to GIT when prompted.
      [https://github.com/codeShareFTC/BeepBeepSampleProject/TrajectoryActions/]  Check this link!!!
-12)  Edit settings.gradle (Project Setting)
+11)
+12)    Edit settings.gradle (Project Setting)
     1) Add these  lines
        `include ':BeepBeep:BeepBeepApp'`
        `include ':BeepBeep:BeepBeepCore'`
