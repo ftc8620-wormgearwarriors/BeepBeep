@@ -44,11 +44,11 @@ A full understand of Roadrunner is encouraged, please read all of their document
 2) Make sure this project builds and RR is working
 3) Fork BeepBeep into your own repo for easy modification and source control.
 4) In your fork of BeepBeep go to \<\>code and copy the URL, use it in next step.
-5) Add the BeepBeep Submodule Select the terminal tab in the bottom window and enter the commend:   
+5) Add the BeepBeep Submodule - Select the terminal tab in the bottom window and enter the commend:   
    `Git submodule add https://github.com/your-repo/BeepBeep.git`
-6) Common version of RoadRunner  To ensure the same version of roadrunner is used by the simulator and the physical robot we need to define the version in a single location.  This is done at the top level of the project and creating a gradile file “build.RoardRunnerCommon.gradle” with the lines:
+6) Common version of RoadRunner - To ensure the same version of roadrunner is used by the simulator and the physical robot we need to define the version in a single location.  This is done at the top level of the project and creating a gradile file “build.RoardRunnerCommon.gradle” with the lines:
 
-    ```
+    ```java
        repositories {
            maven { url = 'https://maven.brott.dev/' }
        }
@@ -57,21 +57,14 @@ A full understand of Roadrunner is encouraged, please read all of their document
            implementation 'com.acmerobotics.roadrunner:actions:1.0.0-beta3'
        }
     ```
-   `repositories {`  
-   `    maven { url = 'https://maven.brott.dev/' }`  
-   **`}`**  
-   `dependencies {`  
-   `    implementation 'com.acmerobotics.roadrunner:core:1.0.0-beta3'`  
-   `    implementation 'com.acmerobotics.roadrunner:actions:1.0.0-beta3'`  
-   **`}`**
 7) Any module that will use roadrunner should include this line in it’s gradle file (instead of above lines)  
    `apply from: '../../build.RoardRunnerCommon.gradle'`
-8) Add a module to store the trajectories.  We named this TranectoryActions.  This module should be at the same level FTCRobotController and TeamCode.
+8) Add a module to store the trajectories.  We named this TrajectoryActions.  This module should be at the same level as FTCRobotController and TeamCode.
    * use project view and add to top level.
         ![CreateNewModule](https://github.com/user-attachments/assets/ce6dc3df-2305-40b9-86fd-20d44e159ab0)
    * Create a java library module with the name TrajectoryActions
    * Change Java Version to “VERSION\_1\_8”
-   * Add add this line to use our global roadrunner version
+   * edit TrajectoryActions build.gradle and add this line to to use our global roadrunner version
      `apply from: '../../build.RoardRunnerCommon.gradle'`
 9) Edit settings.gradle (Project Setting)
     1) Add these  lines
@@ -80,3 +73,49 @@ A full understand of Roadrunner is encouraged, please read all of their document
        `include ':BeepBeep:BeepBeepWin'`
        `include ':trajectoryActions'`
 10) Synch project with gradle files to make sure project structure is updated.
+
+## Clonning a project from GIT that already hass BeepBeep installed
+If you have already added a BeepBeep to your project and have it it GitHub and now want to clone that repo to another computer do this section. 
+1) Select the terminal tab in the bottom window and enter command
+   `git submodule update --init`
+2) Synch project with gradle files
+3) git pull BeepBeep to confirm have latest files.
+
+## Edit Configurations
+1) add BeepBeepWin (windows executable, the prefered way)
+    * Note the working directory should be $MODULE_DIR$
+
+2) add BeepBeepApp (android app / phone simulator) if needed
+   
+
+## Changes to MecanumDrive 
+For the physical robot to use the trajectory actions we need to make a few changes to the project
+1) MecanumDrive must implement Drive template
+    `public final class MecanumDrive implements Drive  {`
+2) Drive will be read, hover over an `add dependency` and `import class`
+
+We want to use common parameters for the simulator and the physical robot
+1) Move the IMU config from the Params class to just be class variable
+2) comment out or delete the PARAMS class
+3) Instantiate PARAMS using the class shared with the simulator
+
+```java
+public class MecanumDrive implements Drive {
+   // IMU orientation
+   // TODO: fill in these values based on
+   //   see https://ftc-docs.firstinspires.org/en/latest/programming_resources/imu/imu.html?highlight=imu#physical-hub-mounting
+   public RevHubOrientationOnRobot.LogoFacingDirection logoFacingDirection =
+           RevHubOrientationOnRobot.LogoFacingDirection.LEFT;
+   public RevHubOrientationOnRobot.UsbFacingDirection usbFacingDirection =
+           RevHubOrientationOnRobot.UsbFacingDirection.UP;
+
+   public static ParamsMecanumDrive PARAMS = new ParamsMecanumDrive();
+
+```
+
+We need a few extra functions to allow setting and getting the robot position.  Put these at the end of the MecanumDrive class
+```java
+    public void setPose(Pose2d p) {this.pose = p;}   // Added for BeepBeep and TrajectoryAction compatibility
+    public Pose2d getPose() {return this.pose;}      // Added for BeepBeep and TrajectoryAction compatibility
+}
+```
