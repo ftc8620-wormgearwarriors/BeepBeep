@@ -79,13 +79,10 @@ A full understand of Roadrunner is encouraged, please read all of their document
      [https://github.com/codeShareFTC/BeepBeepSampleProject/TrajectoryActions/]  Check this link!!!
 11)  Edit settings.gradle (Project Setting)
     1) Add these  lines
-       `include ':BeepBeep:BeepBeepApp'`
-     
        `include ':BeepBeep:BeepBeepCore'`
-     
        `include ':BeepBeep:BeepBeepWin'`
-     
-       `include ':trajectoryActions'`
+       `include ':BeepBeep:BeepBeepApp'`
+       `include ':TrajectoryActions'`
      
 12) Synch project with gradle files to make sure project structure is updated.
 
