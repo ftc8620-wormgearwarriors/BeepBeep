@@ -40,7 +40,7 @@ A full understanding of Road Runner is encouraged, please read all of their docu
 
 ## Installation into project:
 Video of install (written directions below):
-**//todo **
+[BeepBeep install Video](https://youtu.be/Zn9rZX6zMNc)
 
 1) We have provided a BeepBeep sample example project.  PLEASE do not clone this sample project.  Use it for reference and you may pull sample files from it.  This sample project may not be kept up to date with Road Runner or BeepBeep.  Clone those repos directly, not the sample project. [https://github.com/codeShareFTC/BeepBeepSampleProject]
 2) First you need a project that includes the FTC SDK and Road Runner. See RR documentation at:  [https://rr.brott.dev/docs/v1-0/installation/](https://rr.brott.dev/docs/v1-0/installation/) for details.
