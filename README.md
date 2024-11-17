@@ -91,7 +91,7 @@ Video of install (written directions below):
      
 13) Synch project with gradle files to make sure project structure is updated.
 
-## Cloning a project from GIT that already hass BeepBeep installed
+## Cloning a project from GIT that already has BeepBeep installed
 If you have already added a BeepBeep to your project and have it it GitHub and now want to clone that repo to another computer do this section. 
 1) Select the terminal tab in the bottom window and enter command
    `git submodule update --init`
@@ -161,7 +161,7 @@ By initializing each action to a timer, the simulator can run.  When the physica
 
 ## physical robot.  
 TeamCode opmodes need to:
-* initialize the hardware
+* Initialize the hardware
 * Configure any actions
      ```java
         AutoSpecimens autoSpecimens = new AutoSpecimens(drive);
@@ -183,4 +183,4 @@ See the example project for more information:
 
 ## Simulator 
 The simulator is configured in the files TrajectorActions/SimConfig/Robots. (sample config)[https://github.com/codeShareFTC/BeepBeep-SampleProject/blob/master/TrajectoryActions/src/main/java/com/example/trajectoryactions/SimConfig/Robots.java]
-You may add as many robots as desired, and each robot can have many paths available.  We typically do 4 robots, one for each starting location and then the 3 paths that would be used in Auto.  Into the Deep season is made this much simplier.  We now only need 1 path per robot since randomization has been eliiminated.  
+You may add as many robots as desired, and each robot can have many paths available.  We typically do 4 robots, one for each starting location and then the 3 paths that would be used in Auto.  Into the Deep season is made this much simpler.  We now only need 1 path per robot since randomization has been eliminated.  
