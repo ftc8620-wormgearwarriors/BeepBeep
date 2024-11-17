@@ -19,7 +19,7 @@ We strongly believe users of BeepBeep should modify it and make it fit their nee
 
 ### BeepBeepCore
 
-this is the low level simulator code that interfaces with your trajectories
+this is the low level simulator code that interfaces with your trajectories.  The core code runs the trajectory actions through roadrunner and then captures the telemetry packets that are sent to dashboard. The telemtry packets contain the robot position and graphic informaation so it can be drawn on screen.    
 
 ### BeepBeepWin
 
@@ -139,3 +139,44 @@ We need a few extra functions to allow setting and getting the robot position.  
     public Pose2d getPose() {return this.pose;}      // Added for BeepBeep and TrajectoryAction compatibility
 }
 ```
+
+# How to Use
+
+## common requirements
+Your trajectories need to be stored in the TrajectoryActions folder, but you can create as many classes as you need in this folder.  The simulator only understands SequentialAction types.  We build our entire auto into a single SequentialAction.  See the roadrunner documentation for more information on creating SequentialAction, [RoadRunner Actions](https://rr.brott.dev/docs/v1-0/actions/)     
+The primary difference between BeepBeep simulator and the physical robot is that BeepBeep does not understand motors, sensors or any other parts of FtcRobotController.  We create actions for all our motor, servos, sensors and use these actions in the SequentialAction.  We need different actions when using BeepBeep vs the physical robot.  To make this simple we put a list of actions into a class and instatiate this class in our trajectories.
+```java
+    public class ActionParameters {
+        public Action collectSample = new SimTimedAction("Collect Sample", 1.0);
+        public Action deliverSample = new SimTimedAction("Deliver Sample", 1.0);
+        public Action CollectSpecimen =  new SimTimedAction("Collect Specimen", 1.0);
+        public Action deliverSpecimen = new SimTimedAction("Deliver Specimen", 1.0);
+        public Action liftUp = new SimTimedAction("Lift UP", 1.0);
+        public Action liftDown = new SimTimedAction("Lift Down", 0.5);
+        public FieldSide fieldSide = FieldSide.BLUE;
+    }
+    public ActionParameters actionParameters = new ActionParameters();
+```
+By initializing each action to a timer, the simulator can run.  When the physical robot is used it will change these actions to use the motors & Servos etc.
+
+## physical robot.  
+TeamCode opmodes need to:
+* initize the hardware
+* configure any actions
+     ```java
+        AutoSpecimens autoSpecimens = new AutoSpecimens(drive);
+        autoSpecimens.actionParameters.collectSample = moveClawServ(0.25, 1.0);
+        autoSpecimens.actionParameters.deliverSample = moveClawServ(0.75, 1.0);
+        autoSpecimens.actionParameters.liftUp = moveLift(2000, 5.0);
+        autoSpecimens.actionParameters.liftDown = moveLift(100, 5.0);
+
+     ```
+* run the SequentialAction
+
+See the example projet for more information:
+[Sample Opmode](https://github.com/codeShareFTC/BeepBeep-SampleProject/blob/master/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutoSampleBeepBeep.java)
+(Sample Trajectories)[https://github.com/codeShareFTC/BeepBeep-SampleProject/blob/master/TrajectoryActions/src/main/java/com/example/trajectoryactions/SampleTrajectories/AutoSpecimens.java]
+
+## Simulator 
+The simulator is configured in the files TrajectorActions/SimConfig/Robots. (sample config)[https://github.com/codeShareFTC/BeepBeep-SampleProject/blob/master/TrajectoryActions/src/main/java/com/example/trajectoryactions/SimConfig/Robots.java]
+You may add as many robots as desired and each robot can have many paths available.  We typically do 4 robots, one for each starting location and then the 3 paths that would be used in Auto.  Into the Deep season is made this much simplier.  We now only need 1 path per robot since randomization has been eliiminated.  
