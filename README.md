@@ -39,6 +39,8 @@ A full understand of Roadrunner is encouraged, please read all of their document
 
 
 ## Installation into project:
+Video of instal (written directions below):
+**//todo **
 
 1) We have provided a BeepBeep sammple example project.  PLEASE do not clone this sample project.  Use it for reference and you may pull sample files from it.  This sample project may not be kept up to date with RoadRunner or BeepBeep.  Clone those repos directly, not the sample project. [https://github.com/codeShareFTC/BeepBeepSampleProject]
 2)  First you need a project that includes the FTC SDK and RoadRunner. See RR documentation at  [https://rr.brott.dev/docs/v1-0/installation/](https://rr.brott.dev/docs/v1-0/installation/) for details.
@@ -68,7 +70,8 @@ A full understand of Roadrunner is encouraged, please read all of their document
    * use project view and add to top level. Clock on top level of project left window.  File->NewModule, and the files to GIT when prompted.
      
         
-        ![AddModuleTrajectoryActions](https://github.com/user-attachments/assets/85bdda16-709f-4bc7-8f1a-d819afb64cf5)
+      ![AddModuleTrajectoryActions](https://github.com/user-attachments/assets/e3a1ad5c-ead3-4dcd-af73-fc12c9180685)
+
 
      
    * edit TrajectoryActions build.gradle and add this line to to use our global roadrunner version
