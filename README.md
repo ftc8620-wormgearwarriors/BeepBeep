@@ -122,8 +122,11 @@ For the physical robot to use the trajectory actions we need to make a few chang
 
 We want to use common parameters for the simulator and the physical robot
 1) Move the IMU config from the Params class to just be class variable
-2) comment out or delete the PARAMS class
-3) Instantiate PARAMS using the class shared with the simulator
+ * Will alos need to update where logoFacingDirection & usbFacingDirection are used to not be in the PARAMS class.
+2) comment out or delete the PARAMS class and the instantiation of PARAMS.
+ * Note if you have already changed any of the PARAMS be sure to update them in the ParamsMecanumDrive class.
+3) Instantiate PARAMS using the class shared with the simulator (see below)
+4) ParamsMecanumDrive  will be red, hover over it and import the class.
 
 ```java
 public class MecanumDrive implements Drive {
