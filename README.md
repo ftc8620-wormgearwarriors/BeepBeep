@@ -121,6 +121,12 @@ For the physical robot to use the trajectory actions we need to make a few chang
 1) MecanumDrive must implement Drive template
     `public final class MecanumDrive implements Drive  {`
 2) Drive will be read, hover over an `add dependency` and `import class`
+3) We need a few extra functions to allow setting and getting the robot position.  Put these at the end of the MecanumDrive class
+```java
+    public void setPose(Pose2d p) {this.pose = p;}   // Added for BeepBeep and TrajectoryAction compatibility
+    public Pose2d getPose() {return this.pose;}      // Added for BeepBeep and TrajectoryAction compatibility
+}
+```
 
 ## Optional Changes to Params in MecanumDrive 
 We want to use common parameters for the simulator and the physical robot
@@ -145,12 +151,7 @@ public class MecanumDrive implements Drive {
 
 ```
 
-We need a few extra functions to allow setting and getting the robot position.  Put these at the end of the MecanumDrive class
-```java
-    public void setPose(Pose2d p) {this.pose = p;}   // Added for BeepBeep and TrajectoryAction compatibility
-    public Pose2d getPose() {return this.pose;}      // Added for BeepBeep and TrajectoryAction compatibility
-}
-```
+
 
 # How to Use
 
