@@ -313,6 +313,9 @@ public abstract  class BeepBeepCore {
             case intoTheDeep:
                 filepath = "/images/intoTheDeep_Fusion.bmp";
                 break;
+            case decode:
+                filepath = "/images/DecodeBitMapRotated.bmp";
+                break;
         }
 
         try {
