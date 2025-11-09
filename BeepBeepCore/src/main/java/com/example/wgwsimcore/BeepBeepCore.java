@@ -332,13 +332,19 @@ public abstract  class BeepBeepCore {
 
         switch (robots.background) {
             case intoTheDeep:
-                retVal = 2;
+                retVal = 3;
                 break;
             case centerStage:
+                retVal = 2;
+                break;
+            case decode:
+                retVal = 1;
+                break;
             default:
                 retVal = 1;
                 break;
-        }
+            }
+
         return retVal;
     }
 
